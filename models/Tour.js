@@ -6,6 +6,14 @@ const tourSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
+        default: function() {
+            return this.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+        }
+    },
     city: {
         type: String,
         required: true,
@@ -14,15 +22,36 @@ const tourSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    photo: {
+    bannerImg: {
         type: String,
         required: true,
+    },
+    galleryImages: [
+        {
+            type: String,
+        },
+    ],
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    capacity: {
+        type: Number,
+        required: true,
+    },
+    isAvailable: {
+        type: Boolean,
+        default: true,
     },
     price: {
         type: Number,
         required: true,
     },
-    des:{
+    desc:{
         type:String,
         required:true,
     },
@@ -32,11 +61,26 @@ const tourSchema = new mongoose.Schema({
             ref: "Review",
         },
     ],
-    featured: {
+    discount: {
+        type: Number,
+        default: 0,
+    },
+    offDays: {
+        type: [String],
+        default: [],
+    },
+    season: {
+        type: String,
+        default: "All",
+    },
+    isFeatured: {
         type: Boolean,
         default: false,
     },
-
+    facilities: {
+        type: [String],
+        default: [],
+    },
 },
     {
         timestamps: true,

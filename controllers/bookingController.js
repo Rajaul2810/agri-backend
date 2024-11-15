@@ -15,6 +15,17 @@ export const createBooking = async (req, res) => {
 }
 
 
+//get user booking
+export const getUserBooking = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const books = await Booking.find({userId});
+        res.status(200).json({ success: true, message: "Successfull", data: books });
+    } catch (error) {
+        res.status(404).json({ success: false, message: "Not found" });
+    }   
+}
+
 
 // get single booking
 export const getBooking = async (req, res) => {
@@ -30,7 +41,7 @@ export const getBooking = async (req, res) => {
 
 // get all booking
 export const getAllBooking = async (req, res) => {
-    const id = req.params.id;
+    //const id = req.params.id;
     try {
         const books = await Booking.find({});
         res.status(200).json({ success: true, message: "Successfull", data: books });
@@ -38,3 +49,17 @@ export const getAllBooking = async (req, res) => {
         res.status(500).json({ success: false, message: "Not found" });
     }
 }
+
+// delete booking
+export const deleteBooking = async (req, res) => {
+    const id = req.params.id;
+    try {
+        await Booking.findByIdAndDelete(id);
+        res.status(200).json({ success: true, message: "Successfully deleted" });
+    } catch (error) {
+        res.status(404).json({ success: false, message: "Not found" });
+    }
+}
+
+
+

@@ -54,9 +54,19 @@ export const getSingleTour = async (req, res) => {
 // getAll tour
 export const getAllTour = async (req, res) => {
     const page = parseInt(req.query.page);
-    //console.log(page);
+    const city = req.query.city;
+    const season = req.query.season;
+    const category = req.query.category;
+    const facilities = req.query.facilities;
+    
     try {
-        const tours = await Tour.find({}).populate("reviews").skip(page*8).limit(8);
+        const tours = await Tour.find({
+            ...(city && { city }),
+            ...(season && { season }),
+            ...(category && { category }),
+            ...(facilities && { facilities })
+        }).populate("reviews").skip(page*8).limit(8);
+        
         res.status(200).json({ success: true, message: "Successfully found", data: tours });
     } catch (err) {
         res.status(404).json({ success: false, message: "Not found" });
@@ -83,5 +93,15 @@ export const getFeaturedTour = async (req, res) => {
     } catch (err) {
         res.status(404).json({ success: false, message: "Not found" });
 
+    }
+}
+
+// get tour count
+export const getTourCount = async (req, res) => {
+    try {
+        const tourCount = await Tour.estimatedDocumentCount();
+        res.status(200).json({ success: true, data: tourCount });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to fetch tour count" });
     }
 }

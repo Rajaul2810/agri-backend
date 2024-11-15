@@ -2,17 +2,16 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
-    productId: {
+    tour: {
       type: mongoose.Types.ObjectId,
       ref: "Tour",
     },
-    email: {
-      type: String,
-      required: true,
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
     },
     reviewText: {
       type: String,
-      required: true,
     },
     rating: {
       type: Number,
@@ -20,6 +19,10 @@ const reviewSchema = new mongoose.Schema(
       min: 0,
       max: 5,
       default: 0,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }
